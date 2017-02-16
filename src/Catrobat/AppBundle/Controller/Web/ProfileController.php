@@ -81,6 +81,8 @@ class ProfileController extends Controller
             return $this->redirectToRoute('fos_user_security_login');
         }
 
+
+
         \Locale::setDefault(substr($request->getLocale(), 0, 2));
         $country = Intl::getRegionBundle()->getCountryName(strtoupper($user->getCountry()));
         $firstMail = $user->getEmail();
@@ -97,6 +99,33 @@ class ProfileController extends Controller
             'secondMail' => $secondMail,
             'username' => $username,
             'nolb_user' => $nolb_user,
+        ));
+    }
+
+    /**
+     * @Route("/profile/testtask", name="profile_testtask")
+     * @Method({"GET"})
+     */
+    public function profileTestTaskAction(Request $request)
+    {
+        /**
+         * @var $user User
+         */
+        $twig = '::myprofileEditTestTask.html.twig';
+
+        $user = $this->getUser();
+
+        if (!$user) {
+            return $this->redirectToRoute('fos_user_security_login');
+        }
+
+        $manager = $this->get('programmanager');
+
+        $programs = $manager->getUserPrograms($user->getId());
+
+        return $this->get('templating')->renderResponse($twig, array(
+            'profile' => $user,
+            'programs' => $programs
         ));
     }
 

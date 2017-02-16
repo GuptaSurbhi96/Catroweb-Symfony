@@ -40,6 +40,12 @@
       <div class="information-header" id="password-header">{{ 'password'|trans({}, 'catroweb') }}:</div>
       <div class="data" id="password-placeholder">*********</div>
     </div>
+
+    {% if username == 'testuser' %}
+    <div id="testtask-information">
+      <button id="testtask-button" class="btn btn-edit-testtask">{{ 'testtask'|trans({}, 'catroweb') }}</button>
+    </div>
+    {% endif %}
   </div>
 
   <button id="finished-button" class="btn btn-done">{{ 'myprofile.done'|trans({}, 'catroweb') }}</button>
@@ -63,6 +69,7 @@
   <script>
     var profile = new MyProfile('{{ path('profile') }}', '{{ path('email_edit') }}','{{ path('profile_edit') }}', '{{ path('avatar_edit') }}', '{{ path('password_edit') }}',
         '{{ path('country_edit') }}', '{{ path('email_save') }}', '{{ path('country_save') }}', '{{ path('password_save') }}', '{{ path('profile_delete_program') }}',
-        '{{ path('profile_toggle_program_visibility') }}', '{{ 'profile.reallyDeleteProgram'|trans({}, 'catroweb') }}', '{{ path('profile_upload_avatar') }}');
+        '{{ path('profile_toggle_program_visibility') }}', '{{ 'profile.reallyDeleteProgram'|trans({}, 'catroweb') }}', '{{ path('profile_upload_avatar') }}',
+        '{{ path('profile_testtask') }}');
   </script>
 {% endblock %}

@@ -4,7 +4,7 @@
 */
 var MyProfile = function(profile_url, email_edit_url, profile_edit_url, avatar_edit_url, password_edit_url,
                          country_edit_url, save_email_url, save_country_url, save_password_url, delete_url,
-                         toggle_visibility_url, deleteProgramString, upload_url) {
+                         toggle_visibility_url, deleteProgramString, upload_url, testtask_url) {
   var self = this;
   self.profile_url = profile_url;
   self.email_edit_url = email_edit_url;
@@ -15,6 +15,7 @@ var MyProfile = function(profile_url, email_edit_url, profile_edit_url, avatar_e
   self.save_email_url = save_email_url;
   self.save_country_url = save_country_url;
   self.save_password_url =save_password_url;
+  self.testtask_url = testtask_url;
   self.delete_url = delete_url;
   self.upload_url = upload_url;
   self.toggle_visibility_url = toggle_visibility_url;
@@ -62,6 +63,10 @@ var MyProfile = function(profile_url, email_edit_url, profile_edit_url, avatar_e
         break;
     }
   });
+
+  $(document).on("click", "#testtask-button", function () {
+      window.location.href = self.testtask_url;
+  })
 
   $(document).on("click", "#avatar-button-done", function () {
     window.location.href = self.profile_edit_url;
