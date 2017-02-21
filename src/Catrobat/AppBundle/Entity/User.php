@@ -135,6 +135,16 @@ class User extends BaseUser implements LdapUserInterface
      */
     protected $nolb_user = false;
 
+    /**
+     * @ORM\Column(type="smallint", options={"default":0})
+     */
+    protected $times_banned = 0;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true, options={"default":null})
+     */
+    protected $banned_until = null;
+
     public function __construct()
     {
         parent::__construct();
@@ -377,4 +387,78 @@ class User extends BaseUser implements LdapUserInterface
     {
         $this->likes = $likes;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getBannedUntil()
+    {
+        return $this->banned_until;
+    }
+
+    /**
+     * @param mixed $banned_until
+     */
+    public function setBannedUntil($banned_until)
+    {
+        $this->banned_until = $banned_until;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTimesBanned()
+    {
+        return $this->times_banned;
+    }
+
+    /**
+     * @param mixed $times_banned
+     */
+    public function setTimesBanned($times_banned)
+    {
+        $this->times_banned = $times_banned;
+    }
+
+    public function getLocked()
+    {
+        return $this->locked;
+    }
+
+    /**
+   * Bans the user
+   * First time: 24h
+   * Second time: 7d
+   * Third time: permanent
+   * @return String $admin_message contains the text for the flash message
+   */
+    public function ban()
+    {
+        $this->times_banned++;
+        $ban_duration = 0;
+        switch ($this->times_banned)
+        {
+            case 1:
+                $time_to_ban = '+1 day';
+                $ban_duration = 1;
+                break;
+            case 2:
+                $time_to_ban = '+7 days';
+                $ban_duration = 7;
+                break;
+            case 3:
+                $time_to_ban = '+90 years';
+                $ban_duration = 99;
+                break;
+            default:
+                // should never happen
+                $time_to_ban = '+7 days';
+                $ban_duration = 100;
+                break;
+            }
+            $banned_until = new \DateTime($time_to_ban);
+            $this->banned_until = $banned_until;
+            $this->setLocked(true);
+            return $ban_duration;
+        }
 }
